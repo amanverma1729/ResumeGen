@@ -1,0 +1,153 @@
+import { createContext, useContext,  useRef, useState } from "react";
+
+const ResumeContext = createContext();
+
+export const useResume = () => useContext(ResumeContext);
+
+export const ResumeProvider = ({ children }) => {
+
+    const printElem = useRef();
+    const [theme, setTheme] = useState('#9f7aea');
+    const [template, setTemplate] = useState('modern');
+    
+    // Dynamic order and titles of sections
+    const [sections, setSections] = useState([
+        { id: 'work', name: 'Work Experience', column: 'left' },
+        { id: 'education', name: 'Education', column: 'left' },
+        { id: 'skills', name: 'Capabilities & Skills', column: 'right' },
+        { id: 'projects', name: 'Featured Projects', column: 'right' }
+    ]);
+    
+    // Store data for custom generated sections by their unique ID
+    const [customSections, setCustomSections] = useState({});
+
+    const [about, setAbout] = useState({
+        name: "",
+        role: "",
+        email: "",
+        phone: "",
+        address: "",
+        linkedin: "",
+        picture:"",
+    });
+
+    const [educationList, setEducationList] = useState([
+        {
+            id: "",
+            degree: "",
+            school: "",
+            startYr: 0,
+            endYr: 0,
+            grade: "",
+        },
+    ]);
+
+    const [skills, setSkills] = useState([
+        {
+            id: 1,
+            name: "JavaScript",
+        },
+        {
+            id: 2,
+            name: "ReactJS",
+        },
+        {
+            id: 3,
+            name: "NodeJS",
+        },
+        {
+            id: 4,
+            name: "MongoDB",
+        },
+        {
+            id: 5,
+            name: "ExpressJS",
+        },
+        {
+            id: 6,
+            name: "PHP",
+        },
+        {
+            id: 7,
+            name: ".Net",
+        },
+        {
+            id: 8,
+            name: "Java",
+        },
+        {
+            id: 9,
+            name: "RestAPI",
+        },
+        {
+            id: 10,
+            name: "jQuery",
+        },
+        {
+            id: 11,
+            name: "MySQL",
+        },
+        {
+            id: 12,
+            name: "Ajax",
+        },
+        {
+            id: 13,
+            name: "GitHub",
+        },
+        {
+            id: 14,
+            name: "HTML",
+        },
+        {
+            id: 15,
+            name: "CSS",
+        },
+        {
+            id: 16,
+            name: "TailwindCSS",
+        },
+        {
+            id: 17,
+            name: "Bootstrap",
+        },
+    ]);
+
+    const [workList, setWorkList] = useState([
+        {
+            id: "",
+            position: "",
+            company: "",
+            type: "",
+            startDate: "",
+            endDate: "",
+            description: "",
+        },
+    ]);
+
+    const [projects, setProjects] = useState([
+        {
+            id: "",
+            name: "",
+            description: "",
+            url: "",
+        },
+    ]);
+
+
+    // useEffect(() => {
+    //     toast({
+    //         title: `${theme.split(".", 1)} selected`,
+    //         status: 'success',
+    //         isClosable: true,
+    //       })
+    // }, [theme]);
+
+    const value = { about, setAbout, educationList, setEducationList, skills, setSkills, workList, setWorkList, projects, setProjects, printElem, theme, setTheme, template, setTemplate, sections, setSections, customSections, setCustomSections };
+
+    return (
+        <ResumeContext.Provider value={value}>
+            {children}
+        </ResumeContext.Provider>
+    )
+}
