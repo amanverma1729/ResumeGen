@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Builder from './Builder';
 import ResumePreview from './ResumePreview';
 import TopBar from './TopBar';
@@ -7,24 +7,69 @@ import { MdEdit, MdVisibility } from 'react-icons/md';
 const Main = () => {
     const [activeTab, setActiveTab] = useState('editor'); // 'editor' | 'preview'
     const [scale, setScale] = useState(1);
+    const [editorWidth, setEditorWidth] = useState(400);
+    const [isDragging, setIsDragging] = useState(false);
+    const previewContainerRef = useRef(null);
+
+    // Drag Logic
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        e.preventDefault();
+    };
 
     useEffect(() => {
+        const handleMouseMove = (e) => {
+            if (!isDragging) return;
+            let newWidth = e.clientX;
+            if (newWidth < 300) newWidth = 300;
+            if (newWidth > window.innerWidth - 350) newWidth = window.innerWidth - 350;
+            setEditorWidth(newWidth);
+        };
+
+        const handleMouseUp = () => {
+            if (isDragging) setIsDragging(false);
+        };
+
+        if (isDragging) {
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+        }
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isDragging]);
+
+    // Scale Logic
+    useEffect(() => {
         const updateScale = () => {
-            const width = window.innerWidth;
-            if (width < 768) {
-                // Mobile: Calculate scale to fit exactly with a little padding (e.g., 32px)
-                setScale((width - 32) / 794);
-            } else if (width < 1280) {
-                // Tablet (md)
-                setScale(0.85);
-            } else {
-                // Desktop (xl)
-                setScale(1);
+            if (window.innerWidth < 768) {
+                setScale((window.innerWidth - 32) / 794);
+                return;
+            }
+            if (previewContainerRef.current) {
+                const containerWidth = previewContainerRef.current.clientWidth;
+                const availableWidth = containerWidth - 64; // Padding
+                const requiredScale = availableWidth / 794;
+                setScale(Math.min(1.1, requiredScale)); // Cap at 1.1 scale
             }
         };
-        updateScale();
+
         window.addEventListener('resize', updateScale);
-        return () => window.removeEventListener('resize', updateScale);
+        updateScale(); // initial scale
+        
+        let observer;
+        if (previewContainerRef.current && window.ResizeObserver) {
+            observer = new ResizeObserver(() => {
+                updateScale();
+            });
+            observer.observe(previewContainerRef.current);
+        }
+
+        return () => {
+            window.removeEventListener('resize', updateScale);
+            if (observer) observer.disconnect();
+        };
     }, []);
 
     return (
@@ -32,17 +77,36 @@ const Main = () => {
             <TopBar />
 
             <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+                
                 {/* Left Side: Forms workspace */}
-                <div className={`${activeTab === 'editor' ? 'flex' : 'hidden'} md:flex flex-col w-full md:w-1/3 xl:w-[400px] h-full bg-white shadow-xl z-10 overflow-y-auto no-scrollbar`}>
+                <div 
+                    style={{ width: window.innerWidth >= 768 ? editorWidth : '100%' }}
+                    className={`${activeTab === 'editor' ? 'flex' : 'hidden'} md:flex flex-col h-full bg-white shadow-[2px_0_15px_rgba(0,0,0,0.03)] z-10 overflow-y-auto no-scrollbar shrink-0`}
+                >
                     <Builder />
                 </div>
 
+                {/* Drag Handle */}
+                <div 
+                    onMouseDown={handleMouseDown}
+                    className={`hidden md:flex w-2 cursor-col-resize hover:bg-gray-200 transition-colors z-20 ${isDragging ? 'bg-gray-300' : 'bg-transparent'}`}
+                    title="Drag to resize"
+                ></div>
+
                 {/* Right Side: Live Resume Preview Document Area */}
-                <div className={`${activeTab === 'preview' ? 'flex' : 'hidden'} md:flex flex-col w-full md:w-2/3 xl:flex-1 h-full bg-flowcv-bg overflow-y-auto items-center py-6 md:py-10 px-4 md:px-0`}>
-                    <div style={{ transform: `scale(${scale})` }} className="origin-top flex justify-center w-[794px] transition-transform duration-200">
+                <div 
+                    ref={previewContainerRef}
+                    className={`${activeTab === 'preview' ? 'flex' : 'hidden'} md:flex flex-col flex-1 h-full bg-flowcv-bg overflow-y-auto items-center py-6 md:py-10 px-4 md:px-0`}
+                >
+                    <div style={{ transform: `scale(${scale})` }} className="origin-top flex justify-center w-[794px] transition-transform duration-75">
                         <ResumePreview />
                     </div>
                 </div>
+
+                {/* Drag Overlay (prevents selecting text while dragging) */}
+                {isDragging && (
+                    <div className="fixed inset-0 z-50 cursor-col-resize bg-transparent"></div>
+                )}
             </div>
 
             {/* Mobile Bottom Tab Bar */}
@@ -62,7 +126,6 @@ const Main = () => {
                     <span className="text-xs font-semibold">Preview</span>
                 </button>
             </div>
-
         </div>
     )
 }
