@@ -3,8 +3,8 @@ import { useResume } from '../../Context';
 import { v4 as uuidv4 } from 'uuid';
 import { MdDelete } from 'react-icons/md';
 
-const inputClass = "w-full px-3 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 mb-3";
-const labelClass = "block text-gray-700 text-sm font-bold mb-1";
+const inputClass = "w-full px-3 py-2 bg-flowcv-input rounded-xl h-12 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500 mb-3";
+const labelClass = "block text-flowcv-text text-[14px] font-bold mb-1";
 
 const Work = () => {
     const { workList, setWorkList } = useResume();
@@ -28,8 +28,8 @@ const Work = () => {
     return (
         <div className="flex flex-col">
             {workList.map((work, index) => (
-                <details key={work.id || index} className="border border-gray-200 rounded-md mb-4" open={index === 0}>
-                    <summary className="bg-gray-50 px-4 py-3 font-medium cursor-pointer hover:bg-gray-100 transition-colors outline-none">
+                <details key={work.id || index} className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 mb-4" open={index === 0}>
+                    <summary className="bg-flowcv-gray px-5 py-4 font-bold cursor-pointer hover:bg-gray-200 rounded-xl text-flowcv-text transition-colors outline-none">
                         {work.position || "Position"}
                     </summary>
                     <div className="p-4 flex flex-col">
@@ -92,3 +92,4 @@ const Work = () => {
 }
 
 export default Work;
+

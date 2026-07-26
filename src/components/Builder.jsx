@@ -190,9 +190,9 @@ const Builder = () => {
                 <div className="p-6">
                     <button 
                         onClick={addCustomSection}
-                        className="w-full flex items-center justify-center gap-2 py-3 bg-gray-50 hover:bg-purple-50 text-purple-600 font-semibold rounded border border-purple-100 transition-colors"
+                        className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-md transition-transform transform hover:-translate-y-0.5"
                     >
-                        <MdAddCircleOutline size={20} />
+                        <MdAddCircleOutline size={22} />
                         Add Custom Section
                     </button>
                 </div>

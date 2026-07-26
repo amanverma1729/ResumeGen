@@ -2,8 +2,8 @@ import React from "react";
 import { useResume } from "../../Context";
 import ImageUpload from "../ImageUploadButton/ImageUpload.component";
 
-const inputClass = "w-full px-3 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4";
-const labelClass = "block text-gray-700 text-sm font-bold mb-1";
+const inputClass = "w-full px-3 py-2 bg-flowcv-input rounded-xl h-12 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4";
+const labelClass = "block text-flowcv-text text-[14px] font-bold mb-1";
 
 const About = () => {
     const { about, setAbout } = useResume();
@@ -113,3 +113,4 @@ const About = () => {
 };
 
 export default About;
+

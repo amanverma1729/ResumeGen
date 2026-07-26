@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useResume } from '../../Context';
 
-const inputClass = "w-full px-3 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500";
+const inputClass = "w-full px-3 py-2 bg-flowcv-input rounded-xl h-12 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500";
 
 const Skills = () => {
     const [skill, setSkill] = useState("");
@@ -30,7 +30,7 @@ const Skills = () => {
         <div className="flex flex-col">
             <form onSubmit={handleSubmit} className="flex flex-row items-end space-x-4 mb-4">
                 <div className="flex-1">
-                    <label htmlFor='skill' className="block text-gray-700 text-sm font-bold mb-1">Add Skills</label>
+                    <label htmlFor='skill' className="block text-flowcv-text text-[14px] font-bold mb-1">Add Skills</label>
                     <input 
                         onChange={(e) => setSkill(e.target.value)} 
                         value={skill} 
@@ -46,7 +46,7 @@ const Skills = () => {
                 </button>
             </form>
 
-            <div className="border border-gray-200 rounded-md my-4 p-4 flex flex-wrap gap-2">
+            <div className="bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 my-4 p-4 flex flex-wrap gap-2">
                 {skills.length > 0 ? skills.map((s) => (
                     <span
                         key={s.id}
@@ -70,3 +70,4 @@ const Skills = () => {
 }
 
 export default Skills;
+

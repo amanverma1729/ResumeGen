@@ -48,7 +48,7 @@ const GenericSection = ({ sectionId }) => {
                                 value={item.title}
                                 onChange={(e) => handleChange(e, index)}
                                 type="text"
-                                className="w-full px-3 py-2 mt-1 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
+                                className="w-full px-3 py-2 mt-1 bg-white bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
                                 placeholder="Certificate in React, Top Salesman, English, etc."
                             />
                         </div>
@@ -61,7 +61,7 @@ const GenericSection = ({ sectionId }) => {
                                     value={item.subtitle}
                                     onChange={(e) => handleChange(e, index)}
                                     type="text"
-                                    className="w-full px-3 py-2 mt-1 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
+                                    className="w-full px-3 py-2 mt-1 bg-white bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
                                     placeholder="Organization, Company, Proficiency"
                                 />
                             </div>
@@ -72,7 +72,7 @@ const GenericSection = ({ sectionId }) => {
                                     value={item.date}
                                     onChange={(e) => handleChange(e, index)}
                                     type="text"
-                                    className="w-full px-3 py-2 mt-1 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
+                                    className="w-full px-3 py-2 mt-1 bg-white bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-shadow"
                                     placeholder="2023, Fluid, 1st Place"
                                 />
                             </div>
@@ -84,7 +84,7 @@ const GenericSection = ({ sectionId }) => {
                                 name="description"
                                 value={item.description}
                                 onChange={(e) => handleChange(e, index)}
-                                className="w-full px-3 py-2 mt-1 bg-white border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[80px] transition-shadow"
+                                className="w-full px-3 py-2 mt-1 bg-white bg-white rounded-2xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[80px] transition-shadow"
                                 placeholder="Details about this role, award, or certification..."
                             ></textarea>
                         </div>
@@ -103,3 +103,4 @@ const GenericSection = ({ sectionId }) => {
 };
 
 export default GenericSection;
+

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ThemeSelect from './Theme/ThemeSelect';
 import { useReactToPrint } from 'react-to-print';
 import { useResume } from '../Context';
-import { MdOutlineFileDownload, MdSave, MdCloudDownload, MdDashboard } from 'react-icons/md';
+import { MdOutlineFileDownload, MdSave, MdCloudDownload, MdDashboard, MdMenu, MdMenuOpen } from 'react-icons/md';
 import TemplateGalleryModal from './TemplateGalleryModal';
 
 const TopBar = () => {
@@ -30,6 +30,7 @@ const TopBar = () => {
 
     const [loading, setLoading] = useState(false);
     const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const handlePrint = useReactToPrint({
         content: () => printElem.current,
@@ -88,63 +89,63 @@ const TopBar = () => {
     }
 
     return (
-        <header className="w-full bg-white border-b border-gray-200 shadow-sm z-50 px-4 md:px-6 py-2 md:py-3 flex flex-col md:flex-row items-center justify-between shrink-0">
-            <div className="flex items-center space-x-2 mb-2 md:mb-0 w-full md:w-auto justify-between md:justify-start">
+        <header className="relative w-full bg-white border-b border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] z-50 px-4 md:px-8 py-3 md:py-4 flex flex-col md:flex-row items-center justify-between shrink-0">
+            <div className="flex items-center justify-between w-full md:w-auto">
                 <span className="text-2xl font-bold text-purple-600" style={{ fontFamily: "Pacifico" }}>Resumegen</span>
-                {/* <div className="hidden md:flex items-center">
-                    <span className="text-gray-300 mx-2">|</span>
-                    <span className="text-gray-600 font-medium text-sm">Untitled Resume</span>
-                </div> */}
+                <button 
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+                    className="flex md:hidden p-2 text-gray-500 hover:text-flowcv-text hover:bg-flowcv-gray rounded-xl transition-colors"
+                >
+                    {isMobileMenuOpen ? <MdMenuOpen size={28} /> : <MdMenu size={28} />}
+                </button>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 md:gap-4 w-full md:w-auto">
+            <div className={`${isMobileMenuOpen ? 'absolute top-full left-0 w-full bg-white border-b border-gray-100 shadow-xl flex flex-col p-6 space-y-4 z-50 animate-fadeIn' : 'hidden'} md:static md:flex md:flex-row items-center justify-end md:gap-3 w-full md:w-auto md:p-0 md:bg-transparent md:border-none md:shadow-none md:space-y-0`}>
 
-                {/* Template Selector */}
-                <div className="flex items-center space-x-1 md:space-x-2 border-r border-gray-200 pr-2 md:pr-4">
-                    <button
-                        onClick={() => setIsGalleryOpen(true)}
-                        className="flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200 px-3 py-1.5 md:py-2 rounded-md font-semibold transition-colors text-xs md:text-sm"
-                    >
-                        <MdDashboard size={18} />
-                        <span className="hidden sm:inline">Templates</span>
-                        <span className="sm:hidden">Tpl</span>
-                    </button>
-                </div>
+                <button
+                    onClick={() => setIsGalleryOpen(true)}
+                    className="flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-flowcv-text border border-gray-200 px-5 py-2.5 rounded-full font-semibold transition-colors text-sm w-full md:w-auto"
+                >
+                    <MdDashboard size={18} />
+                    <span>Templates</span>
+                </button>
 
-                {/* Theme Selector */}
-                <div className="flex items-center border-r border-gray-200 pr-2 md:pr-4 scale-90 md:scale-100">
+                <div className="w-full md:w-auto">
                     <ThemeSelect />
                 </div>
 
-                {/* Actions */}
-                <div className="flex items-center space-x-1 md:space-x-2">
+                <div className="h-px w-full bg-gray-100 md:hidden my-2"></div>
+                <div className="hidden md:block h-6 w-px bg-gray-200 mx-2"></div>
+
+                <div className="flex items-center gap-3 w-full md:w-auto">
                     <button
                         onClick={handleSave}
                         disabled={loading}
-                        className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 p-1.5 md:p-2 rounded-md transition-colors"
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 text-gray-600 hover:text-flowcv-text bg-gray-50 hover:bg-flowcv-gray border border-gray-200 md:border-none px-4 py-2.5 md:p-2.5 rounded-full transition-colors"
                         title="Save to Cloud"
                     >
-                        <MdSave size={20} className="md:w-6 md:h-6" />
+                        <MdSave size={20} />
+                        <span className="md:hidden text-sm font-semibold">Save</span>
                     </button>
 
                     <button
                         onClick={handleLoad}
                         disabled={loading}
-                        className="text-gray-600 hover:text-green-600 hover:bg-green-50 p-1.5 md:p-2 rounded-md transition-colors"
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 text-gray-600 hover:text-flowcv-text bg-gray-50 hover:bg-flowcv-gray border border-gray-200 md:border-none px-4 py-2.5 md:p-2.5 rounded-full transition-colors"
                         title="Load from Cloud"
                     >
-                        <MdCloudDownload size={20} className="md:w-6 md:h-6" />
-                    </button>
-
-                    <button
-                        onClick={handlePrint}
-                        className="flex items-center gap-1.5 bg-purple-600 hover:bg-purple-700 text-white px-3 md:px-5 py-1.5 md:py-2.5 rounded-md font-semibold transition-colors shadow-sm text-xs md:text-base ml-1"
-                    >
-                        <span className="hidden sm:inline">Download PDF</span>
-                        <span className="sm:hidden">PDF</span>
-                        <MdOutlineFileDownload size={18} className="md:w-5 md:h-5" />
+                        <MdCloudDownload size={20} />
+                        <span className="md:hidden text-sm font-semibold">Load</span>
                     </button>
                 </div>
+
+                <button
+                    onClick={handlePrint}
+                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-md text-sm w-full md:w-auto mt-4 md:mt-0"
+                >
+                    <MdOutlineFileDownload size={20} />
+                    <span>Download PDF</span>
+                </button>
             </div>
             <TemplateGalleryModal isOpen={isGalleryOpen} onClose={() => setIsGalleryOpen(false)} />
         </header>
